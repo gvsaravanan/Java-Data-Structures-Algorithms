@@ -35,8 +35,8 @@ public class Fire {
                 p.set(i,row - 1, fire[row - 1][i]);
             }
 
-            for (int i = 1; i < p.width()-1; i++) {
-                for (int j = 2; j < p.height()-2; j++) {
+            for (int i = 1; i < p.width() - 1; i++) {
+                for (int j = 2; j < p.height() - 2; j++) {
                     int r = (int) ((p.get(i - 1, j + 1).getRed() + p.get(i,j + 1).getRed() + p.get(i + 1,j + 1).getRed() + p.get(i,j + 2).getRed()) / 4.01);
                     int g = (int) ((p.get(i - 1,j + 1).getGreen() + p.get(i,j + 1).getGreen() + p.get(i + 1,j + 1).getGreen() + p.get(i,j + 2).getGreen()) / 4.01);
                     int b = (int) ((p.get(i - 1,j + 1).getBlue() + p.get(i,j + 1).getBlue() + p.get(i + 1,j + 1).getBlue() + p.get(i,j + 2).getBlue()) / 4.01);
