@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Computer Science 3/Graphics/Graphics.iml" filepath="$PROJECT_DIR$/Computer Science 3/Graphics/Graphics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Java_Data_Structures_and_Algorithms.iml" filepath="$PROJECT_DIR$/.idea/Java_Data_Structures_and_Algorithms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Computer Science 3/PrimeNumbers/PrimeNumbers.iml" filepath="$PROJECT_DIR$/Computer Science 3/PrimeNumbers/PrimeNumbers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Computer Science 3/Probability &amp; Searching Algorithms/Probability &amp; Searching Algorithms.iml" filepath="$PROJECT_DIR$/Computer Science 3/Probability &amp; Searching Algorithms/Probability &amp; Searching Algorithms.iml" />
+    </modules>
+  </component>
+</project>
