@@ -19,19 +19,15 @@ public class SegregationModel {
                 if (Math.random() < empty) {
                     arr[r][c] = null;
                 } else {
-                    if (Math.random() < red) {
-                        arr[r][c] = true;
-                    } else {
-                        arr[r][c] = false;
-                    }
+                    arr[r][c] = (Math.random() < red);
                 }
             }
         }
     }
 
-    public void draw(Picture p){
-        for(int r = 0; r < p.width() - 1; r++){
-            for (int c = 0; c < p.height() - 1; c++)
+    public void draw(Picture p, Picture p1, int size){
+        for(int r = 0; r < p.width()/size - 1; r++){
+            for (int c = 0; c < p.height()/size - 1; c++)
                 if(arr[r][c] != null) {
                     if (arr[r][c]) {
                         p.set(r, c, new Color(255, 0, 0));
@@ -44,64 +40,53 @@ public class SegregationModel {
                 }
         }
 
-        p.show();
+        for (int r = 0; r < p1.width() - 1; r++) {
+            for (int c = 0; c < p1.height() - 1; c++) {
+                Color color = p.get(r / size, c / size);
+                p1.set(r, c, color);
+            }
+        }
+
+        p1.show();
     }
 
-    // isSatisfied method to check if spot on arr is satisfied
     public boolean isSatisfied(int r, int c) {
         int countOne = 0;
         int countTwo = 0;
+        int[] xMoves = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int[] yMoves = {-1, 0, 1, -1, 1, -1, 0, 1};
         Boolean coordinate = arr[r][c];
 
-        if (arr[(r + 1 + arr.length) % arr.length][c] != null) {
-            countTwo++;
+        for (int i = 0; i < xMoves.length; i++) {
+            if (((0 <= r + xMoves[i]) && (r + xMoves[i] < arr.length)) && ((0 <= c + yMoves[i]) && (c + yMoves[i] < arr[0].length))) {
+                if (arr[r + xMoves[i]][c + yMoves[i]] != null) {
+                    countOne++;
+                    if (coordinate == arr[r + xMoves[i]][c + yMoves[i]]) {
+                        countTwo++;
+                    }
+                }
+            }
         }
 
-        if (arr[(r - 1 + arr.length) % arr.length][c] != null) {
-            countTwo++;
-        }
-
-        if (arr[r][(c + 1 + arr[0].length) % arr[0].length] != null) {
-            countTwo++;
-        }
-
-        if (arr[r][(c - 1 + arr[0].length) % arr[0].length] != null) {
-            countTwo++;
-        }
-
-        if (coordinate == arr[(r + 1 + arr.length) % arr.length][c] && arr[(r + 1 + arr.length) % arr.length][c] != null) {
-            countOne++;
-        }
-
-        if (coordinate == arr[(r - 1 + arr.length) % arr.length][c] && arr[(r - 1 + arr.length) % arr.length][c] != null) {
-            countOne++;
-        }
-
-        if (coordinate == arr[r][(c + 1 + arr[0].length) % arr[0].length] && arr[r][(c + 1 + arr[0].length) % arr[0].length] != null) {
-            countOne++;
-        }
-
-        if (coordinate == arr[r][(c - 1 + arr[0].length) % arr[0].length] && arr[r][(c - 1 + arr[0].length) % arr[0].length] != null) {
-            countOne++;
-        }
-
-        if (countTwo == 0) {
+        if (countOne == 0) {
             return false;
         }
 
-        return ((double) countOne) / countTwo >= threshold;
+        return (((double) countTwo) / countOne >= threshold);
     }
 
-    public void move() {
-        ArrayList<Boolean> dissatisfied = new ArrayList<Boolean>();
+    public double move() {
+        ArrayList<Boolean> dissatisfied = new ArrayList<>();
+        double count = 0.0;
 
         for (int r = 0; r < arr.length; r++) {
             for (int c = 0; c < arr[0].length; c++) {
                 if (arr[r][c] == null){
                     dissatisfied.add(arr[r][c]);
-                }else if (!isSatisfied(r, c)) {
+                } else if (!isSatisfied(r, c)) {
                     dissatisfied.add(arr[r][c]);
                     arr[r][c] = null;
+                    count += 1.0;
                 }
             }
         }
@@ -114,16 +99,31 @@ public class SegregationModel {
                 }
             }
         }
+
+        return ((arr.length * arr[0].length) - count) / (arr.length * arr[0].length);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        SegregationModel s = new SegregationModel(0.5, 0.2, 0.5, 500);
+        int pixelSize = 4;
+        double satisfaction = 0.0;
+
+        SegregationModel s = new SegregationModel(0.578, 0.103, 0.5, 1000);
         SegregationModel.initialize();
-        Picture p = new Picture(arr.length, arr[0].length);
-        for (int i = 0; i < 100; i ++){
-            s.draw(p);
-            s.move();
-            Thread.sleep(200);
+        Picture p = new Picture(arr.length * pixelSize, arr[0].length * pixelSize);
+        Picture p1 = new Picture(arr.length, arr[0].length);
+
+        System.out.println("Possible segregation splits of the population in Georgia");
+        System.out.println("The tipping point for the similarity threshold is 0.84");
+
+        while (satisfaction < 100.0){
+            s.draw(p, p1, pixelSize);
+            satisfaction = s.move() * 100;
+            System.out.print("Percent satisfied: ");
+            System.out.printf("%.2f", satisfaction);
+            System.out.print("%\tPercent dissatisfied: ");
+            System.out.printf("%.2f", 100 - satisfaction);
+            System.out.print("%\r");
+            Thread.sleep(1);
         }
     }
 }
