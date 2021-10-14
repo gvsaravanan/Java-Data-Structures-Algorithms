@@ -13,6 +13,7 @@ public class SegregationModel {
         this.empty = empty;
     }
 
+    // Randomly initialize 2D array with values
     public static void initialize() {
         for (int r = 0; r < arr.length; r++) {
             for (int c = 0; c < arr[0].length; c++) {
@@ -25,6 +26,7 @@ public class SegregationModel {
         }
     }
 
+    // Draw the 2D array as a Picture object
     public void draw(Picture p, Picture p1, int size){
         for(int r = 0; r < p.width()/size - 1; r++){
             for (int c = 0; c < p.height()/size - 1; c++)
@@ -50,6 +52,7 @@ public class SegregationModel {
         p1.show();
     }
 
+    // Check if the agent at the given coordinate is satisfied or not
     public boolean isSatisfied(int r, int c) {
         int countOne = 0;
         int countTwo = 0;
@@ -75,6 +78,7 @@ public class SegregationModel {
         return (((double) countTwo) / countOne >= threshold);
     }
 
+    // Move the dissatisfied agents to vacant spots and check if they are satisfied
     public double move() {
         ArrayList<Boolean> dissatisfied = new ArrayList<>();
         double count = 0.0;
@@ -103,6 +107,7 @@ public class SegregationModel {
         return ((arr.length * arr[0].length) - count) / (arr.length * arr[0].length);
     }
 
+    // Initialize and run the simulation until every agent is satisfied
     public static void main(String[] args) throws InterruptedException {
         int pixelSize = 4;
         double satisfaction = 0.0;
