@@ -84,51 +84,6 @@ public class WeedSpread {
         return false;
     }
 
-    /*
-    public void spread(int r, int c) {
-        int[] xMoves;
-        int[] yMoves;
-        switch (wind) {
-            case "North":
-                int[] x = {-1, -1, -1, 0, 0, 1, 1, 1};
-                int[] y = {-1, 0, 1, -1, 1, -1, 0, 1};
-                xMoves = x;
-                yMoves = y;
-                break;
-            case "East":
-                int[] x1 = {1, 0, -1, 1, -1, 1, 0, -1};
-                int[] y1 = {-1, -1, -1, 0, 0, 1, 1, 1};
-                xMoves = x1;
-                yMoves = y1;
-                break;
-            case "South":
-                int[] x2 = {1, 1, 1, 0, 0, -1, -1, -1};
-                int[] y2 = {-1, 0, 1, -1, 1, -1, 0, 1};
-                xMoves = x2;
-                yMoves = y2;
-                break;
-            case "West":
-                int[] x3 = {-1, 0, 1, -1, 1, -1, 0, 1};
-                int[] y3 = {-1, -1, -1, 0, 0, 1, 1, 1};
-                xMoves = x3;
-                yMoves = y3;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + wind);
-        }
-        Boolean coordinate = arr[r][c];
-
-        for (int i = 0; i < xMoves.length; i++) {
-            if (((0 <= r + xMoves[i]) && (r + xMoves[i] < arr.length)) && ((0 <= c + yMoves[i]) && (c + yMoves[i] < arr[0].length))) {
-                if (invasive(r, c)) {
-                    arr[r][c] = true;
-                }
-            }
-        }
-    }
-
-     */
-
     public void move(int r, int c) {
         int[] xMoves;
         int[] yMoves;
@@ -196,37 +151,6 @@ public class WeedSpread {
 
         return counter != 0;
     }
-
-    /*
-    public double move() {
-        ArrayList<Integer> dissatisfied = new ArrayList<>();
-        double count = 0.0;
-
-        for (int r = 0; r < arr.length; r++) {
-            for (int c = 0; c < arr[0].length; c++) {
-                if (arr[r][c] == 0){
-                    dissatisfied.add(arr[r][c]);
-                } else if (!isSatisfied(r, c)) {
-                    dissatisfied.add(arr[r][c]);
-                    arr[r][c] = 0;
-                    count += 1.0;
-                }
-            }
-        }
-
-        for (int r = 0; r < arr.length; r++) {
-            for (int c = 0; c < arr[0].length; c++) {
-                if(arr[r][c] == 0){
-                    int index = (int) (Math.floor(Math.random() * dissatisfied.size()));
-                    arr[r][c] = dissatisfied.remove(index);
-                }
-            }
-        }
-
-        return ((arr.length * arr[0].length) - count) / (arr.length * arr[0].length);
-    }
-
-     */
 
     public static void main(String[] args) throws InterruptedException {
 
