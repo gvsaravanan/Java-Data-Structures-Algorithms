@@ -5,11 +5,11 @@ import java.util.Arrays;
 public class WeedSpread {
 
     private static int[][] arr;
-    private static String wind;
+    private static String waterFlow;
 
     public WeedSpread(String w, int size) {
         arr = new int[size][size];
-        this.wind = w;
+        this.waterFlow = w;
     }
 
     public void initialize() {
@@ -50,35 +50,39 @@ public class WeedSpread {
     }
 
     public static boolean invasive(int r, int c){
-        boolean one = false;
-        boolean two = false;
-        boolean three = false;
-        boolean four = false;
+        double rand = Math.random() * 10;
 
-        while(!one && !two && !three && !four) {
-            double rand = Math.random() * 10;
-
-            if (rand <= 2) {
-                if (arr[r][c] != arr[(r - 1 + arr.length) % arr.length][(c + arr[0].length) % arr[0].length]) {
-                    return true;
+        switch (waterFlow) {
+            case "North":
+                if (rand <= 2.5) {
+                    if (arr[r][c] != arr[(r + arr.length) % arr.length][(c + 1 + arr[0].length) % arr[0].length]) {
+                        return true;
+                    }
                 }
-                one = true;
-            } else if (rand > 2 && rand <= 5) {
-                if (arr[r][c] != arr[(r + 1 + arr.length) % arr.length][(c + arr[0].length) % arr[0].length]) {
-                    return true;
+                break;
+            case "East":
+                if (rand > 2.5 && rand <= 5) {
+                    if (arr[r][c] != arr[(r + 1 + arr.length) % arr.length][(c + arr[0].length) % arr[0].length]) {
+                        return true;
+                    }
                 }
-                two = true;
-            } else if (rand > 5 && rand <= 8) {
-                if (arr[r][c] != arr[(r + arr.length) % arr.length][(c - 1 + arr[0].length) % arr[0].length]) {
-                    return true;
+                break;
+            case "South":
+                if (rand > 5 && rand >= 7.5) {
+                    if (arr[r][c] != arr[(r + arr.length) % arr.length][(c - 1 + arr[0].length) % arr[0].length]) {
+                        return true;
+                    }
                 }
-                three = true;
-            } else if (rand > 8 && rand < 10) {
-                if (arr[r][c] != arr[(r + arr.length) % arr.length][(c + 1 + arr[0].length) % arr[0].length]) {
-                    return true;
+                break;
+            case "West":
+                if (rand < 10) {
+                    if (arr[r][c] != arr[(r - 1 + arr.length) % arr.length][(c + arr[0].length) % arr[0].length]) {
+                        return true;
+                    }
                 }
-                four = true;
-            }
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + waterFlow);
         }
 
         return false;
@@ -89,7 +93,7 @@ public class WeedSpread {
         int[] yMoves;
         int coordinate = arr[r][c];
 
-        switch (wind) {
+        switch (waterFlow) {
             case "North":
                 int[] x = {-1, -1, -1, 0, 0, 1, 1, 1};
                 int[] y = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -115,7 +119,7 @@ public class WeedSpread {
                 yMoves = y3;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + wind);
+                throw new IllegalStateException("Unexpected value: " + waterFlow);
         }
 
         for (int i = 0; i < xMoves.length; i++) {
@@ -154,7 +158,7 @@ public class WeedSpread {
 
     public static void main(String[] args) throws InterruptedException {
 
-        WeedSpread w = new WeedSpread("North", 500);
+        WeedSpread w = new WeedSpread("East", 500);
         Picture p = new Picture(arr.length, arr[0].length);
         w.initialize();
 
