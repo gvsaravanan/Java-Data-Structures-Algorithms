@@ -119,7 +119,7 @@ public class SegregationModel {
 
     // Initialize and run the simulation until every agent is satisfied
     public static void main(String[] args) throws InterruptedException {
-        int pixelSize = 4;
+        int pixelSize = 8;
         double satisfaction = 0.0;
 
         SegregationModel s = new SegregationModel(1, 0.68,0.39, 0.17, 0.7, 200);
