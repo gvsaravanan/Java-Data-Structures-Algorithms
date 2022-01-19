@@ -1,67 +1,77 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Graph {
-
-    private Map<String, LinkedList<String>> map;
+    private HashMap<String, TreeSet<String>> adjmap;
+    private int numEdges = 0;
 
     public Graph() {
-        map = new HashMap<>();
+        adjmap = new HashMap<>();
     }
 
-    public Graph(String filename) {
-        map = new HashMap<>();
-        Scanner s = new Scanner(filename);
-        if (s.hasNextLine()) {
-            String obj = s.next();
-            map.put(obj, new LinkedList<>());
-            map.get(obj).add(s.next());
+    public Graph(String filename, String delim) {
+        adjmap = new HashMap<>();
+        try {
+            Scanner sc = new Scanner(new File(filename));
+            while (sc.hasNextLine()) {
+                String[] inputLine = sc.nextLine().split(delim);
+                addEdge(inputLine[0], inputLine[1]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void addEdge(String v, String w) {
-        if (!map.containsKey(v)) {
-            map.put(v, new LinkedList<String>());
-        }
-
-        if (!map.containsKey(w)) {
-            map.put(w, new LinkedList<String>());
-        }
-
-        map.get(v).add(w);
-        map.get(w).add(v);
+        if (!adjmap.containsKey(v))
+            adjmap.put(v, new TreeSet<>());
+        if (!adjmap.containsKey(w))
+            adjmap.put(w, new TreeSet<>());
+        adjmap.get(v).add(w);
+        adjmap.get(w).add(v); // omit this for digraph
+        numEdges++;
     }
 
-    public int V() {
-        return map.keySet().size();
+    int V() {
+        return adjmap.keySet().size();
     }
 
-    public int E() {
-        int count = 0;
-        for (String v : map.keySet()) {
-            count += map.get(v).size;
-        }
-        return count / 2;
+    int E() {
+        return numEdges;
     }
 
     public Iterable<String> vertices() {
-        System.out.println(map);
+        return adjmap.keySet();
     }
 
     public Iterable<String> adjacentTo(String v) {
-        return map.get(v);
+        return adjmap.get(v); // returning a treeset
     }
 
-    public int degree(String v) {
-        return map.get(v).size;
+    int degree(String v) {
+        return adjmap.get(v).size();
     }
 
-    public boolean hasVertex(String v) {
-        return map.containsKey(v);
+    boolean hasVertex(String v) {
+        return adjmap.containsKey(v);
     }
 
-    public boolean hasEdge(String v, String w) {
-        return map.get(v).contains(w);
+    boolean hasEdge(String v, String w) {
+        if (!hasVertex(v))
+            return false;
+        if (!hasVertex(w))
+            return false;
+        return adjmap.get(v).contains(w);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (String v : vertices()) {
+            sb.append(v + ": " );
+            for (String adj : adjacentTo(v))
+                sb.append(adj + " ");
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }
